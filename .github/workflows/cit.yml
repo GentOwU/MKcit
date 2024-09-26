@@ -16,6 +16,10 @@ jobs:
           zip -r mkcit.zip assets/ pack.mcmeta
           rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' . ./release
           cd release
+      - name: Delete the latest release
+        uses: actions/delete-release@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@master
         env:
