@@ -12,9 +12,10 @@ jobs:
       - uses: actions/checkout@main
       - name: Prepare CIT zip
         run: |
+          mkdir -p release
           zip -r mkcit.zip assets/ pack.mcmeta
           rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' . ./release
-          cd release
+          mv mkcit.zip ./release/
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@master
