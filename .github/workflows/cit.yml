@@ -10,9 +10,6 @@ jobs:
       new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
       - uses: actions/checkout@main
-        env:
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
       - name: Prepare CIT zip
         run: |
           zip -r mkcit.zip assets/ pack.mcmeta
@@ -23,9 +20,6 @@ jobs:
         uses: anothrNick/github-tag-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO_OWNER: Spbog
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
       - name: Set new tag output
         run: echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_ENV
       - name: Debug tag
@@ -39,26 +33,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@main
-
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@main
         env:
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ needs.build.outputs.new_tag }}
           release_name: Release ${{ needs.build.outputs.new_tag }}
           draft: false
           prerelease: false
-
       - name: Upload Release Asset
         uses: actions/upload-release-asset@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ACTIONS_RUNNER_DEBUG: true
-          ACTIONS_STEP_DEBUG: true
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./release/mkcit.zip
