@@ -8,8 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - name: List MKcit Directory
+        run: ls -la ./MKcit
       - name: Zip Folder
-        run: zip -r release.zip ./MKcit/*
+        run: zip -r release.zip MKcit/*
       - name: Release to Github
         run: echo "Release"
       - name: Create Release Folder
