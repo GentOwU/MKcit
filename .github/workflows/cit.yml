@@ -29,6 +29,8 @@ jobs:
         run: echo "New tag is ${{ steps.tag_version.outputs.new_tag }}"
       - name: List files in release directory
         run: ls -la ./release
+      - name: Debug new tag before release
+        run: echo "New tag before release is ${{ steps.set_tag.outputs.new_tag }}"
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
