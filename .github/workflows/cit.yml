@@ -12,25 +12,22 @@ jobs:
       new_tag: ${{ steps.set_tag.outputs.new_tag }}
     steps:
       - uses: actions/checkout@v2
+
       - name: Prepare CIT zip
         run: |
           zip -r mkcit.zip assets/ pack.mcmeta
           rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' . ./release
-          cd release
+
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.37.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set new tag output
         id: set_tag
         run: echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_ENV
-      - name: Debug tag
-        run: echo "New tag is ${{ steps.tag_version.outputs.new_tag }}"
-      - name: List files in release directory
-        run: ls -la ./release
-      - name: Debug new tag before release
-        run: echo "New tag before release is ${{ steps.set_tag.outputs.new_tag }}"
+
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -41,6 +38,7 @@ jobs:
           release_name: Release ${{ steps.set_tag.outputs.new_tag }}
           draft: false
           prerelease: false
+
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
