@@ -26,6 +26,7 @@ jobs:
           REPO_OWNER: Spbog
           ACTIONS_RUNNER_DEBUG: true
           ACTIONS_STEP_DEBUG: true
+      - name: Set new tag output
         run: echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_ENV
       - name: Debug tag
         run: echo "New tag is ${{ steps.tag_version.outputs.new_tag }}"
