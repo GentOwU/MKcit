@@ -11,7 +11,7 @@ jobs:
       - name: List MKcit Directory
         run: ls -la 
       - name: Zip Folder
-        run: zip -r release.zip MKcit/*
+        run: zip -r mkcit.zip assets/ pack.mcmeta
       - name: Release to Github
         run: echo "Release"
       - name: Create Release Folder
