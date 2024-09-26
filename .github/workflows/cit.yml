@@ -1,0 +1,25 @@
+name: MasterDeployCI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.0
+        env:
+          ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
+      - name: Prepare CIT zip
+        run: |
+          zip -r mkcit.zip assets/ pack.mcmeta
+          rsync -arv --exclude='.git/' --exclude='.github/' --exclude='.gitignore' . ./release
+          cd release
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: Spbog
+          ACTIONS_RUNNER_DEBUG: true
+          ACTIONS_STEP_DEBUG: true
