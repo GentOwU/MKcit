@@ -1,15 +1,17 @@
 name: CitDeploy
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
       new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v2
       - name: Prepare CIT zip
         run: |
           zip -r mkcit.zip assets/ pack.mcmeta
@@ -17,7 +19,7 @@ jobs:
           cd release
       - name: Bump version and push tag
         id: tag_version
-        uses: anothrNick/github-tag-action@master
+        uses: anothrNick/github-tag-action@1.37.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Set new tag output
@@ -28,16 +30,16 @@ jobs:
         run: ls -la ./release
       - name: Create GitHub Release
         id: create_release
-        uses: actions/create-release@main
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ needs.build.outputs.new_tag }}
-          release_name: Release ${{ needs.build.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          release_name: Release ${{ steps.tag_version.outputs.new_tag }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@main
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -45,3 +47,4 @@ jobs:
           asset_path: ./release/mkcit.zip
           asset_name: mkcit.zip
           asset_content_type: application/zip
+
