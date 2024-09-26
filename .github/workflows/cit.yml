@@ -28,7 +28,7 @@ jobs:
         id: set_tag
         run: echo "new_tag=${{ steps.tag_version.outputs.new_tag }}" >> $GITHUB_ENV
 
-      - name: Create GitHub Release
+      - name: Create CIT Release Zip
         id: create_release
         uses: actions/create-release@main
         env:
@@ -39,7 +39,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Upload Release Asset
+      - name: Upload CIT Release Zip
         uses: actions/upload-release-asset@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
