@@ -10,13 +10,6 @@ jobs:
       new_tag: ${{ steps.tag_version.outputs.new_tag }}
     steps:
       - uses: actions/checkout@main
-      - name: Cache dependencies
-        uses: actions/cache@main
-        with:
-          path: ~/.cache
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
       - name: Prepare CIT zip
         run: |
           zip -r mkcit.zip assets/ pack.mcmeta
@@ -33,13 +26,6 @@ jobs:
         run: echo "New tag is ${{ steps.tag_version.outputs.new_tag }}"
       - name: List files in release directory
         run: ls -la ./release
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@main
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@main
