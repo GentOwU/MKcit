@@ -47,4 +47,3 @@ jobs:
           asset_path: ./release/mkcit.zip
           asset_name: mkcit.zip
           asset_content_type: application/zip
-
