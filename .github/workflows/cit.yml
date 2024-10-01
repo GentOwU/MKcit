@@ -14,7 +14,7 @@ jobs:
     outputs:
       new_tag: ${{ steps.set_tag.outputs.new_tag }}
     steps:
-      - uses: actions/checkout@v2  # Specify a stable version
+      - uses: actions/checkout@main  # Specify a stable version
 
       - name: Prepare CIT zip
         run: |
@@ -23,7 +23,7 @@ jobs:
 
       - name: Bump version and push tag
         id: tag_version
-        uses: anothrNick/github-tag-action@v1.2.0  # Pin to a version
+        uses: anothrNick/github-tag-action@master  # Pin to a version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
